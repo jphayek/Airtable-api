@@ -1,10 +1,34 @@
 const express = require('express');
 const { getProjects, addProject } = require('./airtableService');
+const { generateToken, authenticateToken } = require('./auth');
+const bcrypt = require('bcryptjs');
+const verifyToken = require('./authMiddleware');
+
+
+const users = [
+    { id: 1, username: 'admin', password: '$2b$10$AEJNg5wUtrfuw.my8xacNOYsFJGN00VxloF49K4Hs4HRRp/8e4Wnq' }
+];
 
 const router = express.Router();
 
-// 🔹 Route GET : Récupérer les projets
-router.get('/projects', async (req, res) => {
+// Route POST : Connexion de l'administrateur
+router.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    const user = users.find((u) => u.username === username);
+
+    if (!user) return res.status(400).send('Utilisateur non trouvé.');
+
+    const validPassword = await bcrypt.compare(password, user.password);
+
+    if (!validPassword) return res.status(400).send('Mot de passe incorrect.');
+
+    const token = generateToken(user.id);
+    res.json({ token });
+});
+
+// Route GET : Récupérer les projets (protégée par l'authentification)
+router.get('/projects', authenticateToken, async (req, res) => {
     try {
         const projects = await getProjects();
         res.json(projects);
@@ -13,8 +37,8 @@ router.get('/projects', async (req, res) => {
     }
 });
 
-// 🔹 Route POST : Ajouter un projet
-router.post('/projects', async (req, res) => {
+// Route POST : Ajouter un projet (protégée par l'authentification)
+router.post('/projects', authenticateToken, async (req, res) => {
     try {
         const newProject = await addProject(req.body);
         res.json(newProject);
