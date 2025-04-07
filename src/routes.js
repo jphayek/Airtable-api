@@ -2,11 +2,10 @@ const express = require('express');
 const { getProjects, addProject } = require('./airtableService');
 const { generateToken, authenticateToken } = require('./auth');
 const bcrypt = require('bcryptjs');
-const verifyToken = require('./authMiddleware');
-
+//const verifyToken = require('./authMiddleware');
 
 const users = [
-    { id: 1, username: 'admin', password: '$2b$10$AEJNg5wUtrfuw.my8xacNOYsFJGN00VxloF49K4Hs4HRRp/8e4Wnq' }
+    { id: 1, username: 'admin', password: '$2b$10$AfznG.EhQpWoEIDeEuURe.mkKPWxMh66oDnmrihiPhT.ULKVVIDli' }
 ];
 
 const router = express.Router();
@@ -46,5 +45,5 @@ router.post('/projects', authenticateToken, async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
+console.log(router);
 module.exports = router;

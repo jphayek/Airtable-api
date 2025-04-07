@@ -27,4 +27,40 @@ const verifyToken = (req, res, next) => {
     });
 };
 
-module.exports = verifyToken;
+const authenticateToken = (req, res, next) => {
+    const token = req.header('Authorization')?.replace('Bearer ', ''); // On récupère le token dans l'en-tête
+    if (!token) return res.status(401).send('Accès refusé, token manquant.');
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET); // Vérifier le token avec la clé secrète
+        req.user = decoded;
+        next();
+    } catch (error) {
+        res.status(400).send('Token invalide.');
+    }
+};
+
+const checkAuth = (req, res, next) => {
+    const token = req.headers['authorization'];
+    if (!token) {
+        return res.status(403).json({ message: 'Accès interdit, token manquant.' });
+    }
+
+    const tokenParts = token.split(' ');
+    if (tokenParts[0] !== 'Bearer' || !tokenParts[1]) {
+        return res.status(403).json({ message: 'Format de token incorrect.' });
+    }
+
+    const tokenToVerify = tokenParts[1];
+
+    jwt.verify(tokenToVerify, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Token invalide.' });
+        }
+        
+        req.user = decoded;
+        next();
+    });
+};
+
+module.exports = {verifyToken, authenticateToken, checkAuth};
