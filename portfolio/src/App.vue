@@ -1,26 +1,25 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Accueil</router-link>
-      <router-link to="/admin">Admin</router-link>
-    </nav>
+  <div>
+    <Navbar />
     <router-view />
   </div>
 </template>
 
 <script>
+import Navbar from './components/Navbar.vue';
+
 export default {
   name: 'App',
+  components: {
+    Navbar,
+  },
 };
 </script>
 
 <style>
-nav {
-  margin-bottom: 20px;
-}
-router-link {
-  margin-right: 15px;
-  text-decoration: none;
-  color: #007bff;
+
+body {
+  margin: 0;
+  padding-top: 80px; 
 }
 </style>
