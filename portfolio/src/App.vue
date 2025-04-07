@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+    <nav>
+      <router-link to="/">Accueil</router-link>
+      <router-link to="/admin">Admin</router-link>
+    </nav>
     <router-view />
   </div>
 </template>
@@ -11,10 +15,12 @@ export default {
 </script>
 
 <style>
-
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
+nav {
+  margin-bottom: 20px;
+}
+router-link {
+  margin-right: 15px;
+  text-decoration: none;
+  color: #007bff;
 }
 </style>
