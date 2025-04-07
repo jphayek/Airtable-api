@@ -1,0 +1,32 @@
+/* Couleurs principales */
+:root {
+    --primary-color: #4a90e2;    /* Bleu moderne */
+    --secondary-color: #50e3c2;  /* Vert d'accent */
+    --tertiary-color: #f5a623;   /* Jaune doux */
+    --background-color: #f1f1f1; /* Gris clair pour le fond */
+    --text-color: #333333;       /* Gris foncé pour le texte */
+    --text-muted: #a1a1a1;       /* Texte secondaire */
+    --button-hover: #3498db;     /* Bleu plus foncé pour le hover */
+    --card-bg: #ffffff;          /* Fond des cartes */
+    --border-color: #e1e1e1;     /* Bordure légère */
+  }
+  
+  /* Typographie */
+  body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+  
+  h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--primary-color);
+  }
+  
+  button {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    border-radius: 5px;
+  }
+  

@@ -1,0 +1,18 @@
+.project-list-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .project-list-wrapper .project-card {
+    flex-basis: 300px;
+    flex-grow: 1;
+  }
+  
+  .project-list-wrapper p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  

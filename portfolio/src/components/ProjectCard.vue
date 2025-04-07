@@ -1,53 +1,60 @@
 <template>
-    <div class="project-card">
-      <h3>{{ project.name }}</h3>
-      <p>{{ project.description }}</p>
-      <p><strong>Likes:</strong> {{ project.likes }}</p>
-      <button @click="likeProject">Like</button>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    name: 'ProjectCard',
-    props: {
-      project: {
-        type: Object,
-        required: true,  // Assurer que 'project' est toujours défini
-      }
-    },
-    methods: {
-      likeProject() {
-        this.$emit('like', this.project);  // Émettre l'événement 'like' au parent
-      }
+  <div class="project-card">
+    <h3>{{ project.name }}</h3>
+    <p>{{ project.description }}</p>
+    <p class="likes">Likes: {{ project.likes }}</p>
+    <!-- Bouton de like -->
+    <button class="like-button" @click="likeProject">
+      Like
+    </button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'ProjectCard',
+  props: {
+    project: Object,
+  },
+  methods: {
+    likeProject() {
+      this.$emit('like', this.project);
     }
-  };
-  </script>
-  
-  <style scoped>
-  .project-card {
-    border: 1px solid #ddd;
-    padding: 16px;
-    border-radius: 8px;
-    margin-bottom: 16px;
-    width: 300px;
   }
-  .project-card h3 {
-    margin: 0 0 8px;
-  }
-  .project-card p {
-    margin: 0 0 8px;
-  }
-  .project-card button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  .project-card button:hover {
-    background-color: #45a049;
-  }
-  </style>
-  
+};
+</script>
+
+<style scoped>
+.project-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+
+.project-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.project-card p {
+  font-size: 1rem;
+}
+
+.like-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.like-button:hover {
+  background-color: #45a049;
+}
+</style>
