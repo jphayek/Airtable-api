@@ -1,13 +1,11 @@
 <template>
-  <div class="container project-list">
-    <h2>Projets Étudiants</h2>
-    <div v-if="projects.length > 0" class="project-list-wrapper">
-      <ProjectCard
-        v-for="(project, index) in projects"
-        :key="index"
-        :project="project"
-        @like="handleLike"
-      />
+  <div>
+    <h2>Liste des projets</h2>
+    <div v-if="projects.length > 0">
+      <div v-for="project in projects" :key="project.id">
+        <h3>{{ project.fields.Nom }}</h3>
+        <p>{{ project.fields.Description }}</p>
+      </div>
     </div>
     <div v-else>
       <p>Aucun projet trouvé.</p>
@@ -16,27 +14,24 @@
 </template>
 
 <script>
-import ProjectCard from '../components/ProjectCard.vue';
+import axios from '../services/axios'; 
 
 export default {
-  name: 'ProjectList',
-  components: {
-    ProjectCard
-  },
   data() {
     return {
-      projects: [
-        { name: 'Projet 1', description: 'Description du projet 1', likes: 0 },
-        { name: 'Projet 2', description: 'Description du projet 2', likes: 0 },
-      ]
+      projects: [],
     };
   },
-  methods: {
-    handleLike(project) {
-      project.likes += 1;
+  async created() {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get('http://localhost:5000/api/projects', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      this.projects = response.data;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des projets:', error);
     }
-  }
+  },
 };
 </script>
-
-<style scoped src="../styles/ProjectList.css"></style>

@@ -45,5 +45,5 @@ router.post('/projects', authenticateToken, async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-console.log(router);
+//console.log(router);
 module.exports = router;
