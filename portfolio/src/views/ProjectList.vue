@@ -13,6 +13,14 @@
   </div>
 </template>
 
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body, input, textarea, button {
+  font-family: 'Roboto', sans-serif;
+}
+</style>
+
 <script>
 import axios from '../services/axios'; 
 

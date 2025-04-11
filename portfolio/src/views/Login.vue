@@ -77,6 +77,11 @@
   </script>
   
   <style scoped>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body, input, textarea, button {
+  font-family: 'Roboto', sans-serif;
+}
   .login-container {
     max-width: 400px;
     margin: 0 auto;
