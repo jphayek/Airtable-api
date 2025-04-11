@@ -68,38 +68,61 @@ body, input, textarea, button {
 }
 
 .project-list {
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
   font-size: 2rem;
   color: #333;
   text-align: center;
+  margin-bottom: 30px;
+  font-weight: 600;
 }
 
 .project-item {
   margin-bottom: 20px;
   background-color: white;
-  padding: 15px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+}
+
+.project-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
 
 .project-item h3 {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   color: #333;
+  margin-bottom: 10px;
 }
 
 .project-item p {
   font-size: 1rem;
   color: #666;
+  line-height: 1.5;
+  margin: 5px 0;
 }
 
 .project-item p strong {
-  font-weight: bold;
+  font-weight: 600;
+  color: #444;
+}
+
+.project-item a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.project-item a:hover {
+  color: #5c6bc0;
 }
 
 .loading {
@@ -113,5 +136,27 @@ h2 {
   color: red;
   font-size: 1.2rem;
   font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .project-list {
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .project-item {
+    padding: 15px;
+  }
+
+  .project-item h3 {
+    font-size: 1.4rem;
+  }
+
+  .project-item p {
+    font-size: 0.95rem;
+  }
 }
 </style>
