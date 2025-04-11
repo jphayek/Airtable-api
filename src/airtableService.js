@@ -22,12 +22,28 @@ const getProjects = async () => {
 // Fonction pour ajouter un projet dans Airtable
 const addProject = async (projectData) => {
     try {
-        const response = await axios.post(airtableUrl, { fields: projectData }, {
+        const newProjectData = {
+            records: [
+                {
+                    fields: {
+                        Nom: projectData.nom,
+                        Description: projectData.description,
+                        Technos: projectData.technos,
+                        Lien: projectData.lien,
+                        Promo: projectData.promo,
+                        Catégorie: projectData.categorie
+                    }
+                }
+            ]
+        };
+
+        const response = await axios.post(airtableUrl, newProjectData, {
             headers: {
                 Authorization: `Bearer ${AIRTABLE_API_KEY}`,
                 'Content-Type': 'application/json'
             }
         });
+
         return response.data; // Retourne la réponse d'Airtable
     } catch (error) {
         throw new Error(error.response?.data || error.message);

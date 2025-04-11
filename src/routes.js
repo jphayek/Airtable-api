@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 //const verifyToken = require('./authMiddleware');
 
 const users = [
-    { id: 1, username: 'admin', password: '$2b$10$AfznG.EhQpWoEIDeEuURe.mkKPWxMh66oDnmrihiPhT.ULKVVIDli' }
+    { id: 1, username: 'admin', password: '$2b$10$AfznG.EhQpWoEIDeEuURe.mkKPWxMh66oDnmrihiPhT.ULKVVIDli', role: 'admin' }
 ];
 
 const router = express.Router();
