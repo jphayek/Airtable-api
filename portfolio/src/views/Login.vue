@@ -50,12 +50,13 @@
           localStorage.setItem("studentId", response.data.userId);
   
           // Sauvegarder le rôle (si renvoyé)
-          if (response.data.user?.role) {
-            localStorage.setItem('role', response.data.user.role);
+          if (response.data.role) {
+            localStorage.setItem('role', response.data.role);  // Enregistre le rôle
           }
+
   
           // Redirection vers le tableau de bord admin
-          if (response.data.user?.role === 'admin') {
+          if (response.data.role === 'admin') {
             router.push('/admin');
           } else {
             router.push('/');

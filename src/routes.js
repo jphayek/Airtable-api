@@ -24,7 +24,11 @@ router.post('/login', async (req, res) => {
     if (!validPassword) return res.status(400).send('Mot de passe incorrect.');
 
     const token = generateToken(user.id);
-    res.json({ token, userId: user.id });
+
+    res.json({ token,
+        userId: user.id,
+        role: user.role
+    });
 });
 
 // Route GET : Récupérer les projets (protégée par l'authentification)

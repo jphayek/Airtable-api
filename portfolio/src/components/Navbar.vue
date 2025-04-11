@@ -5,9 +5,14 @@
       <ul class="nav-links">
         <li><router-link to="/" class="nav-item">Accueil</router-link></li>
         <li><router-link to="/projects" class="nav-item">Projets</router-link></li>
-        
-        <!-- Lien Admin uniquement si l'utilisateur est admin -->
+
+        <!-- Affiche la navbar Admin uniquement si l'utilisateur est admin -->
         <li v-if="isAdmin"><router-link to="/admin" class="nav-item">Admin</router-link></li>
+
+        <!-- Affiche le bouton de déconnexion seulement si l'utilisateur est connecté -->
+        <li v-if="isLoggedIn">
+          <button @click="logout" class="nav-item logout-button">Déconnexion</button>
+        </li>
       </ul>
     </div>
   </nav>
@@ -18,11 +23,26 @@ export default {
   name: 'Navbar',
   data() {
     return {
+      // Vérifie si le rôle dans localStorage est admin
       isAdmin: localStorage.getItem('role') === 'admin',
+      // Vérifie si un token existe pour savoir si l'utilisateur est connecté
+      isLoggedIn: !!localStorage.getItem('token'),
     };
   },
+  methods: {
+    logout() {
+      // Supprimer les éléments stockés dans localStorage pour déconnecter l'utilisateur
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      localStorage.removeItem('studentId');
+      
+      // Redirection vers la page de login
+      this.$router.push('/login');
+    }
+  }
 };
 </script>
+
 
 <style scoped>
 .navbar {
@@ -72,5 +92,21 @@ export default {
 
 .navbar-container a {
   display: block;
+}
+
+/* Style du bouton de déconnexion */
+.logout-button {
+  background-color: #e74c3c; /* Rouge pour la déconnexion */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #c0392b;
 }
 </style>

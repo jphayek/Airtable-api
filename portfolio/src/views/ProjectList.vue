@@ -65,12 +65,10 @@ export default {
       const studentId = localStorage.getItem("studentId");
 
       const response = await axios.post(
-        `http://localhost:5000/api/projets/${projectId}/like`,
-        { studentId },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      `http://localhost:5000/api/projets/${projectId}/like`,
+      { studentId },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
 
       console.log(response.data.message);
     } catch (error) {
