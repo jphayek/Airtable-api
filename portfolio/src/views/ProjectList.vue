@@ -17,6 +17,7 @@
         <p><strong>Lien:</strong> <a :href="project.fields.Lien" target="_blank">{{ project.fields.Lien }}</a></p>
         <p><strong>Promotion:</strong> {{ project.fields.Promo }}</p>
         <p><strong>Étudiants impliqués:</strong> {{ project.fields.Etudiants }}</p>
+        <button @click="likeProject(project.id)">Aimer ce projet</button>
       </div>
     </div>
     
@@ -57,6 +58,27 @@ export default {
       this.loading = false;
     }
   },
+  methods: {
+    async likeProject(projectId) {
+    try {
+      const token = localStorage.getItem('token');
+      const studentId = localStorage.getItem("studentId");
+
+      const response = await axios.post(
+        `http://localhost:5000/api/projets/${projectId}/like`,
+        { studentId },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      console.log(response.data.message);
+    } catch (error) {
+      console.error('Erreur lors du like du projet:', error);
+    }
+  },
+  },
+
 };
 </script>
 

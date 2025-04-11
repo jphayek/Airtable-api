@@ -5,7 +5,8 @@ const bcrypt = require('bcryptjs');
 //const verifyToken = require('./authMiddleware');
 
 const users = [
-    { id: 1, username: 'admin', password: '$2b$10$AfznG.EhQpWoEIDeEuURe.mkKPWxMh66oDnmrihiPhT.ULKVVIDli', role: 'admin' }
+    { id: 1, username: 'admin', password: '$2b$10$AfznG.EhQpWoEIDeEuURe.mkKPWxMh66oDnmrihiPhT.ULKVVIDli', role: 'admin' },
+    { id: 2, username: 'user', password: '$2b$10$eKRJsaOWGh5ENhJCxj8h4.QyUvWlQ7v3Kgkv8AqFJf.PaxRlw7JQa', role: 'user' }
 ];
 
 const router = express.Router();
@@ -23,7 +24,7 @@ router.post('/login', async (req, res) => {
     if (!validPassword) return res.status(400).send('Mot de passe incorrect.');
 
     const token = generateToken(user.id);
-    res.json({ token });
+    res.json({ token, userId: user.id });
 });
 
 // Route GET : Récupérer les projets (protégée par l'authentification)

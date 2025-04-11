@@ -50,4 +50,27 @@ const addProject = async (projectData) => {
     }
 };
 
-module.exports = { getProjects, addProject };
+
+// Fonction pour liker un projet 
+const likeProject = async ( projectId) => {
+    try {
+        const token = localStorage.getItem('token');
+        const studentId = localStorage.getItem('studentId'); // récupéré au login !
+    
+        if (!studentId) {
+          throw new Error("ID étudiant non trouvé");
+        }
+    
+        const response = await axios.post(
+          `http://localhost:5000/api/projets/${projectId}/like`,
+          { studentId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+    
+        console.log(response.data.message);
+      } catch (error) {
+        console.error('Erreur lors du like du projet:', error);
+      }
+    };
+
+module.exports = { getProjects, addProject, likeProject };

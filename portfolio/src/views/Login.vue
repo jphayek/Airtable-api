@@ -47,6 +47,7 @@
   
           // Sauvegarder le token
           localStorage.setItem('token', response.data.token);
+          localStorage.setItem("studentId", response.data.userId);
   
           // Sauvegarder le rôle (si renvoyé)
           if (response.data.user?.role) {
