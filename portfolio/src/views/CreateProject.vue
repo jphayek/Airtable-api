@@ -5,7 +5,7 @@
       <form @submit.prevent="submitForm">
         <div>
           <label for="name">Nom du projet</label>
-          <input type="text" v-model="newProject.name" id="name" required />
+          <input type="text" v-model="newProject.nom" id="name" required />
         </div>
   
         <div>
@@ -15,7 +15,7 @@
   
         <div>
           <label for="category">Catégorie</label>
-          <input type="text" v-model="newProject.category" id="category" required />
+          <input type="text" v-model="newProject.categorie" id="category" required />
         </div>
   
         <div>
@@ -25,7 +25,7 @@
   
         <div>
           <label for="link">Lien du projet</label>
-          <input type="url" v-model="newProject.link" id="link" />
+          <input type="url" v-model="newProject.lien" id="link" />
         </div>
   
         <div>
@@ -35,7 +35,7 @@
   
         <div>
           <label for="students">Étudiants</label>
-          <input type="text" v-model="newProject.students" id="students" />
+          <input type="text" v-model="newProject.etudiants" id="students" />
         </div>
   
         <button type="submit">Créer le projet</button>
@@ -53,14 +53,14 @@
     data() {
       return {
         newProject: {
-          name: '',
-          description: '',
-          technos: '',
-          link: '',
-          promo: '',
-          students: '',
-          category: '',
-        },
+        nom: '',
+        description: '',
+        technos: '',
+        lien: '',
+        promo: '',
+        etudiants: '',
+        categorie: '',
+      },
         message: '',
         messageClass: '',
       };
@@ -75,7 +75,7 @@
           this.messageClass = 'success';
   
           // Réinitialiser le formulaire
-          this.newProject = { name: '', description: '', technos: '', link: '', promo: '', students: '', category: '' };
+          this.newProject = { nom: '', description: '', technos: '', lien: '', promo: '', etudiants: '', categorie: '' };
   
           // Rediriger vers la page admin après création
           this.$router.push({ path: '/admin' });
