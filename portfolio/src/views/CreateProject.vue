@@ -13,24 +13,42 @@
         <textarea v-model="newProject.description" id="description" required placeholder="Décrivez votre projet"></textarea>
       </div>
 
+      <!-- Liste déroulante pour la catégorie -->
       <div class="form-group">
         <label for="category">Catégorie</label>
-        <input type="text" v-model="newProject.categorie" id="category" required placeholder="Catégorie du projet" />
+        <select v-model="newProject.categorie" id="category" required>
+          <option value="">Sélectionner une catégorie</option>
+          <option value="Web">Web</option>
+          <option value="Mobile">Mobile</option>
+          <option value="Infrastructure">Infrastructure</option>
+          <option value="Big Data">Big Data</option>
+        </select>
       </div>
 
+      <!-- Liste déroulante pour les technologies -->
       <div class="form-group">
         <label for="technos">Technos utilisées</label>
-        <input type="text" v-model="newProject.technos" id="technos" placeholder="Technologies utilisées" />
+        <select v-model="newProject.technos" id="technos">
+          <option value="">Sélectionner les technologies</option>
+          <option value="JavaScript">JavaScript</option>
+          <option value="ReactJS">ReactJS</option>
+        </select>
+      </div>
+
+      <!-- Liste déroulante pour la promotion -->
+      <div class="form-group">
+        <label for="promo">Promotion</label>
+        <select v-model="newProject.promo" id="promo">
+          <option value="">Sélectionner la promotion</option>
+          <option value="2025">2025</option>
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+        </select>
       </div>
 
       <div class="form-group">
         <label for="link">Lien du projet</label>
         <input type="url" v-model="newProject.lien" id="link" placeholder="Lien vers le projet" />
-      </div>
-
-      <div class="form-group">
-        <label for="promo">Promotion</label>
-        <input type="text" v-model="newProject.promo" id="promo" placeholder="Ex: Promotion 2025" />
       </div>
 
       <div class="form-group">
@@ -140,7 +158,8 @@ label {
 }
 
 input,
-textarea {
+textarea,
+select {
   padding: 12px;
   font-size: 16px;
   border: 1px solid #ddd;
@@ -152,7 +171,8 @@ textarea {
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   border-color: #667eea;
   outline: none;
 }
