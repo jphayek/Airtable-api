@@ -27,33 +27,53 @@
   </template>
   
   <script>
-  //import axios from 'axios';
   import axios from '../services/axios';
   import { useRouter } from 'vue-router';
+  import { ref } from 'vue';
   
   export default {
-  data() {
-    return {
-      username: '',
-      password: ''
-    };
-  },
-  methods: {
-    async login() {
-      try {
-        const response = await axios.post('/api/login', {
-          username: this.username,
-          password: this.password
-        });
-        console.log(response.data); 
-        // Enregistrer le token dans le localStorage ou gérer la session
-        localStorage.setItem('token', response.data.token);
-      } catch (error) {
-        console.error('Erreur lors de la tentative de connexion:', error);
-      }
+    setup() {
+      const router = useRouter();
+      const username = ref('');
+      const password = ref('');
+      const errorMessage = ref('');
+  
+      const login = async () => {
+        try {
+          const response = await axios.post('/api/login', {
+            username: username.value,
+            password: password.value
+          });
+  
+          // Sauvegarder le token
+          localStorage.setItem('token', response.data.token);
+  
+          // Sauvegarder le rôle (si renvoyé)
+          if (response.data.user?.role) {
+            localStorage.setItem('role', response.data.user.role);
+          }
+  
+          // Redirection vers le tableau de bord admin
+          if (response.data.user?.role === 'admin') {
+            router.push('/admin');
+          } else {
+            router.push('/');
+          }
+  
+        } catch (error) {
+          console.error('Erreur lors de la tentative de connexion:', error);
+          errorMessage.value = 'Échec de la connexion. Vérifie tes identifiants.';
+        }
+      };
+  
+      return {
+        username,
+        password,
+        errorMessage,
+        login
+      };
     }
-  }
-};
+  };
   </script>
   
   <style scoped>
