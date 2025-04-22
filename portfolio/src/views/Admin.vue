@@ -40,7 +40,7 @@
               <td><a :href="project.fields.Lien" target="_blank">{{ project.fields.Lien }}</a></td>
               <td>{{ project.fields.Promo }}</td>
               <td>{{ project.fields.Etudiants }}</td>
-              <td>{{ project.fields.Categorie }}</td>
+              <td>{{ project.fields.Catégorie }}</td>
               <td>
                 <button class="edit-btn" @click="editProject(project)">Modifier</button>
                 <button class="delete-btn" @click="deleteProject(project)">Supprimer</button>
