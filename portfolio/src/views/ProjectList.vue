@@ -17,7 +17,7 @@
         <p><strong>Lien:</strong> <a :href="project.fields.Lien" target="_blank">{{ project.fields.Lien }}</a></p>
         <p><strong>Promotion:</strong> {{ project.fields.Promo }}</p>
         <p><strong>Étudiants impliqués:</strong> {{ project.fields.Etudiants }}</p>
-        <button @click="likeProject(project.id)">Aimer ce projet</button>
+        <button @click="likeProject(project.id)">Like</button>
       </div>
     </div>
     
@@ -35,48 +35,58 @@
 
 <script>
 import axios from '../services/axios';
+import { ref, computed } from 'vue';
 
 export default {
-  data() {
-    return {
-      projects: [],
-      loading: true,  // Pour savoir si la requête est en cours
-      error: false,   // Pour savoir si une erreur s'est produite
-    };
-  },
-  async created() {
+  setup() {
+    const projects = ref([]); 
+    const studentId = localStorage.getItem('studentId');
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+
+    const isUserLoggedIn = computed(() => !!token && role === 'user');
+
+    const likeProject = async (projectId) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get('http://localhost:5000/api/projects', {
-        headers: { Authorization: `Bearer ${token}` },
+      //console.log("Token envoyé :", token);
+      const response = await axios.post(`/api/projects/${projectId}/like`, null, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
-      this.projects = response.data;
-    } catch (error) {
-      console.error('Erreur lors de la récupération des projets:', error);
-      this.error = true;
-    } finally {
-      this.loading = false;
-    }
-  },
-  methods: {
-    async likeProject(projectId) {
-    try {
-      const token = localStorage.getItem('token');
-      const studentId = localStorage.getItem("studentId");
 
-      const response = await axios.post(
-      `http://localhost:5000/api/projets/${projectId}/like`,
-      { studentId },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
+      // Met à jour la vue en fonction de la réponse
       console.log(response.data.message);
+      // Vous pouvez aussi mettre à jour la liste des projets ou l'état ici si nécessaire
     } catch (error) {
       console.error('Erreur lors du like du projet:', error);
     }
-  },
-  },
+  };
 
+    // Charge les projets
+    const loadProjects = async () => {
+      try {
+        const response = await axios.get('/api/projects', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        projects.value = response.data;
+      } catch (error) {
+        console.error('Erreur lors du chargement des projets:', error);
+      }
+    };
+
+    // Charger les projets lors du montage du composant
+    loadProjects();
+
+    return {
+      projects,
+      isUserLoggedIn,
+      likeProject,
+      studentId
+    };
+  }
 };
 </script>
 

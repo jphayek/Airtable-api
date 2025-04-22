@@ -47,23 +47,16 @@ router.post('/projets', checkAuth, async (req, res) => {
 
 
 // Route pour ajouter un like 
-router.post('/projets/:projectId/like', checkAuth, async (req, res) => {
-    console.log('Route atteint', req.params); // Affiche les paramètres de la route
+router.post('/projets/:projectId/like', checkAuth, async (req, res) => { //je dois modifié la route pour bien tester nouvelle route : /:projectId/like 
+    const { projectId } = req.params;
+    const userId = req.user.id;
+
     try {
-        const { studentId } = req.body; // ID de l'étudiant qui like le projet
-        const { projectId } = req.params; // ID du projet qui est liké
+        const updatedProject = await likeProject(projectId, userId);
 
-        if (!studentId || !projectId) {
-            return res.status(400).json({ message: 'L\'ID de l\'étudiant et du projet sont requis.' });
-        }
-
-        // Appel de la fonction likeProject
-        const updatedStudent = await likeProject(studentId, projectId);
-
-        res.status(200).json({ message: 'Projet liké avec succès', student: updatedStudent });
+        res.json({ message: 'Projet liké avec succès!', project: updatedProject });
     } catch (error) {
-        console.error('Erreur lors du like du projet:', error);
-        res.status(500).json({ message: 'Erreur serveur', error: error.message });
+        res.status(400).json({ error: error.message });
     }
 });
 

@@ -15,7 +15,10 @@
     <!-- Affichage des projets -->
     <div v-else-if="projects.length > 0">
       <div class="project-list">
-        <h2>Liste des projets</h2>
+        <h2 style="display: flex;
+        font-family: 'Roboto', sans-serif;
+        justify-content: center;
+        font-size: 25px;">Liste des projets</h2>
         <table class="projects-table">
           <thead>
             <tr>

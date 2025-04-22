@@ -1,4 +1,8 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
+
+
+console.log("JWT_SECRET utilisé dans checkAuth :", process.env.JWT_SECRET);
 
 const verifyToken = (req, res, next) => {
     // Vérifier si un token est présent dans l'en-tête de la requête
