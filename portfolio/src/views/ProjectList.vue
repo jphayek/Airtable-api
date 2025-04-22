@@ -12,7 +12,7 @@
       <div v-for="project in projects" :key="project.id" class="project-item">
         <h3>{{ project.fields.Nom }}</h3>
         <p><strong>Description:</strong> {{ project.fields.Description }}</p>
-        <p><strong>Catégorie:</strong> {{ project.fields.Categorie }}</p>
+        <p><strong>Catégorie:</strong> {{ project.fields.Catégorie }}</p>
         <p><strong>Technos:</strong> {{ project.fields.Technos }}</p>
         <p><strong>Lien:</strong> <a :href="project.fields.Lien" target="_blank">{{ project.fields.Lien }}</a></p>
         <p><strong>Promotion:</strong> {{ project.fields.Promo }}</p>
