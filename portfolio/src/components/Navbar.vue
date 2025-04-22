@@ -21,22 +21,19 @@
 <script>
 export default {
   name: 'Navbar',
-  data() {
-    return {
-      // Vérifie si le rôle dans localStorage est admin
-      isAdmin: localStorage.getItem('role') === 'admin',
-      // Vérifie si un token existe pour savoir si l'utilisateur est connecté
-      isLoggedIn: !!localStorage.getItem('token'),
-    };
+  computed: {
+  isLoggedIn() {
+    return !!localStorage.getItem('token');
+  },
+  isAdmin() {
+    return localStorage.getItem('role') === 'admin';
+  }
   },
   methods: {
     logout() {
-      // Supprimer les éléments stockés dans localStorage pour déconnecter l'utilisateur
       localStorage.removeItem('token');
       localStorage.removeItem('role');
       localStorage.removeItem('studentId');
-      
-      // Redirection vers la page de login
       this.$router.push('/login');
     }
   }
@@ -45,6 +42,11 @@ export default {
 
 
 <style scoped>
+
+li{
+  display: flex;
+  align-items: center;
+}
 .navbar {
   position: fixed;
   width: 100%;

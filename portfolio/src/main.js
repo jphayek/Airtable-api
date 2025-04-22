@@ -10,7 +10,16 @@ import CreateProject from './views/CreateProject.vue';
 // Routes de l'application
 const routes = [
   { path: '/', component: Home },
-  { path: '/admin', component: Admin },
+  { path: '/admin', component: Admin,
+    beforeEnter: (to, from, next) => {
+      const isAdmin = localStorage.getItem('role') === 'admin';
+      if (!isAdmin) {
+        next('/login');
+      } else {
+        next();
+      }
+    }
+   },
   { path: '/create-project', component: CreateProject },
   { path: '/login', component: Login },
   { path: '/projects', component: ProjectList },
