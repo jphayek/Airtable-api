@@ -22,6 +22,7 @@ const getProjects = async () => {
 // Fonction pour ajouter un projet dans Airtable
 const addProject = async (projectData) => {
     try {
+        
         const newProjectData = {
             records: [
                 {
@@ -37,6 +38,8 @@ const addProject = async (projectData) => {
             ]
         };
 
+        //console.log("Essai d'ajouter le projet avec les données suivantes:", newProjectData);
+
         const response = await axios.post(airtableUrl, newProjectData, {
             headers: {
                 Authorization: `Bearer ${AIRTABLE_API_KEY}`,
@@ -46,6 +49,7 @@ const addProject = async (projectData) => {
 
         return response.data; // Retourne la réponse d'Airtable
     } catch (error) {
+        //console.error('Erreur dans addProject:', error);
         throw new Error(error.response?.data || error.message);
     }
 };
@@ -109,11 +113,27 @@ const getProjectById = async (projectId) => {
 
 // Fonction pour modifier un projet
 const updateProject = async (projectId, updatedFields) => {
+
+    const project = await getProjectById(projectId);
+    if (!project) {
+        throw new Error('Projet non trouvé');
+    }
+    
     try {
+        // Construire dynamiquement l'objet 'fields' en incluant uniquement les champs non vides
+        const fieldsToUpdate = {};
+
+        if (updatedFields.Nom) fieldsToUpdate.Nom = updatedFields.Nom;
+        if (updatedFields.Description) fieldsToUpdate.Description = updatedFields.Description;
+        if (updatedFields.Technos) fieldsToUpdate.Technos = updatedFields.Technos;
+        if (updatedFields.Lien) fieldsToUpdate.Lien = updatedFields.Lien;
+        if (updatedFields.Promo) fieldsToUpdate.Promo = updatedFields.Promo;
+        if (updatedFields.Catégorie) fieldsToUpdate.Catégorie = updatedFields.Catégorie;
+
         const response = await axios.patch(
             `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}/${projectId}`,
             {
-                fields: updatedFields
+                fields: fieldsToUpdate
             },
             {
                 headers: {
@@ -124,8 +144,10 @@ const updateProject = async (projectId, updatedFields) => {
         );
         return response.data;
     } catch (error) {
+        console.error('Erreur lors de la mise à jour du projet:', error);
         throw new Error(error.message || 'Erreur lors de la mise à jour du projet');
     }
 };
+
 
 module.exports = { getProjects, addProject, likeProject, getProjectById, updateProject };
