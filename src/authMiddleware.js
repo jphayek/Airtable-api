@@ -31,6 +31,14 @@ const verifyToken = (req, res, next) => {
     });
 };
 
+// Middleware pour vérifier le rôle admin
+const checkAdminRole = (req, res, next) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ message: 'Accès refusé. Rôle insuffisant.' });
+    }
+    next();
+};
+
 const authenticateToken = (req, res, next) => {
     const token = req.header('Authorization')?.replace('Bearer ', ''); // On récupère le token dans l'en-tête
     if (!token) return res.status(401).send('Accès refusé, token manquant.');
