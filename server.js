@@ -21,6 +21,12 @@ app.use('/api', routes);
 //app.use('/api/auth', authRoutes);  
 app.use('/api/projects', projetsRoutes);
 
+// Middleware de gestion des erreurs globales
+app.use((err, req, res, next) => {
+  console.error("Erreur non gérée:", err);
+  res.status(500).json({ message: 'Erreur interne du serveur', error: err.message });
+});
+
 // 🚀 Lancer le serveur
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
