@@ -17,7 +17,9 @@
         <p><strong>Lien:</strong> <a :href="project.fields.Lien" target="_blank">{{ project.fields.Lien }}</a></p>
         <p><strong>Promotion:</strong> {{ project.fields.Promo }}</p>
         <p><strong>Étudiants impliqués:</strong> {{ project.fields.Etudiants }}</p>
-        <button @click="likeProject(project.id)">Like</button>
+        <button class="like-button" @click="likeProject(project.id)">
+          ❤️ Like
+        </button>
       </div>
     </div>
     
@@ -166,6 +168,25 @@ h2 {
   color: red;
   font-size: 1.2rem;
   font-weight: bold;
+}
+
+.like-button {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s, transform 0.2s ease;
+  box-shadow: 0 2px 8px rgba(255, 77, 79, 0.3);
+}
+
+.like-button:hover {
+  background-color: #ff7875;
+  transform: scale(1.05);
 }
 
 @media (max-width: 768px) {
