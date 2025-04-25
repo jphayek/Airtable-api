@@ -96,8 +96,8 @@ export default {
 
     // Fonction pour gérer la modification d'un projet
     editProject(project) {
-      console.log("Édition du projet:", project);
-      // Rediriger vers la page de modification du projet si nécessaire
+      this.$router.push({ path: `/edit-project/${project.id}` });
+      
     },
 
     // Fonction pour supprimer un projet

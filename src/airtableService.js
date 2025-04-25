@@ -101,9 +101,31 @@ const getProjectById = async (projectId) => {
                 headers: { Authorization: `Bearer ${AIRTABLE_API_KEY}` }
             }
         );
-        return response.data;  // Retourne les détails du projet
+        return response.data; 
     } catch (error) {
         throw new Error('Erreur lors de la récupération du projet');
     }
 };
-module.exports = { getProjects, addProject, likeProject, getProjectById };
+
+// Fonction pour modifier un projet
+const updateProject = async (projectId, updatedFields) => {
+    try {
+        const response = await axios.patch(
+            `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}/${projectId}`,
+            {
+                fields: updatedFields
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        throw new Error(error.message || 'Erreur lors de la mise à jour du projet');
+    }
+};
+
+module.exports = { getProjects, addProject, likeProject, getProjectById, updateProject };

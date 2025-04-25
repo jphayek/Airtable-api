@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const { checkAuth } = require('./authMiddleware');
-const { getProjects, addProject, likeProject } = require('./airtableService');
+const { getProjects, addProject, likeProject, updateProject, getProjectById } = require('./airtableService');
 
 // Route pour récupérer tous les projets
 router.get('/projets', checkAuth, async (req, res) => {
@@ -57,6 +57,41 @@ router.post('/projets/:projectId/like', checkAuth, async (req, res) => { //je do
         res.json({ message: 'Projet liké avec succès!', project: updatedProject });
     } catch (error) {
         res.status(400).json({ error: error.message });
+    }
+});
+
+/////////////////////////////////////////////////////////////////////
+/////////////ADMIN MODIFICATION/////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+
+// Route pour récupérer un projet par son ID
+router.get('/projets/:id', checkAuth, async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log("ID du projet reçu:", id);
+        const project = await getProjectById(id);
+        if (!project) {
+            return res.status(404).json({ message: 'Projet non trouvé' });
+        }
+        res.status(200).json({ project });
+    } catch (error) {
+        console.error('Erreur lors de la récupération du projet:', error);
+        res.status(500).json({ message: 'Erreur serveur', error: error.message });
+    }
+});
+
+
+// Modifier un projet par ID
+router.put('/projets/:id', checkAuth, async (req, res) => {
+    const { id } = req.params;
+    const fields = req.body;
+
+    try {
+        const updatedProject = await updateProject(id, fields);
+        res.status(200).json({ message: "Projet mis à jour avec succès", project: updatedProject });
+    } catch (error) {
+        console.error("Erreur lors de la mise à jour du projet:", error);
+        res.status(500).json({ message: "Erreur serveur", error: error.message });
     }
 });
 
