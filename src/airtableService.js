@@ -118,17 +118,21 @@ const updateProject = async (projectId, updatedFields) => {
     if (!project) {
         throw new Error('Projet non trouvé');
     }
-    
+
     try {
-        // Construire dynamiquement l'objet 'fields' en incluant uniquement les champs non vides
+    
         const fieldsToUpdate = {};
 
-        if (updatedFields.Nom) fieldsToUpdate.Nom = updatedFields.Nom;
-        if (updatedFields.Description) fieldsToUpdate.Description = updatedFields.Description;
-        if (updatedFields.Technos) fieldsToUpdate.Technos = updatedFields.Technos;
-        if (updatedFields.Lien) fieldsToUpdate.Lien = updatedFields.Lien;
-        if (updatedFields.Promo) fieldsToUpdate.Promo = updatedFields.Promo;
-        if (updatedFields.Catégorie) fieldsToUpdate.Catégorie = updatedFields.Catégorie;
+        const fields = updatedFields.fields;
+
+        if (fields.Nom !== undefined) fieldsToUpdate.Nom = fields.Nom;
+        if (fields.Description) fieldsToUpdate.Description = fields.Description;
+        if (fields.Technos) fieldsToUpdate.Technos = fields.Technos;
+        if (fields.Lien) fieldsToUpdate.Lien = fields.Lien;
+        if (fields.Promo) fieldsToUpdate.Promo = fields.Promo;
+        if (fields.Catégorie) fieldsToUpdate.Catégorie = fields.Catégorie;
+
+        console.log('fieldsToUpdate:', fieldsToUpdate);
 
         const response = await axios.patch(
             `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}/${projectId}`,
@@ -142,9 +146,10 @@ const updateProject = async (projectId, updatedFields) => {
                 }
             }
         );
+        //console.log('Réponse de l\'API Airtable:', response.data);
         return response.data;
     } catch (error) {
-        console.error('Erreur lors de la mise à jour du projet:', error);
+        //console.error('Erreur lors de la mise à jour du projet:', error);
         throw new Error(error.message || 'Erreur lors de la mise à jour du projet');
     }
 };

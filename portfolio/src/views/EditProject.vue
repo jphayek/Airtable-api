@@ -51,10 +51,7 @@
           <input type="url" v-model="project.lien" id="link" placeholder="Lien vers le projet" />
         </div>
   
-        <div class="form-group">
-          <label for="students">Étudiants impliqués</label>
-          <input type="text" v-model="project.etudiants" id="students" placeholder="Nom des étudiants" />
-        </div>
+
   
         <button type="submit" class="submit-btn">Modifier le projet</button>
       </form>
@@ -75,7 +72,7 @@
           technos: '',
           lien: '',
           promo: '',
-          etudiants: '',
+          //etudiants: '',
           categorie: '',
         },
         message: '',
@@ -86,9 +83,10 @@
     const projectId = this.$route.params.id;
     try {
         const response = await axios.get(`http://localhost:5000/api/projects/${projectId}`);
-        console.log('DATA REÇUE =>', response.data);
-        console.log(response.data);
-        const fields = response.data.project.fields; 
+        //console.log('DATA REÇUE =>', response.data);
+        console.log('Données du projet récupérées :', response.data);
+        const fields = response.data.project.fields;
+        console.log('Champs du projet :', fields); 
 
         this.project = {
         nom: fields.Nom || '',
@@ -96,7 +94,7 @@
         technos: fields.Technos || '',
         lien: fields.Lien || '',
         promo: fields.Promo || '',
-        etudiants: fields.Etudiants || '',
+        //etudiants: fields.Etudiants || '',
         categorie: fields.Categorie || '',
         };
     } catch (error) {
@@ -107,18 +105,17 @@
     },
 
     methods: {
-        async submitForm() {
+    async submitForm() {
     this.message = '';
     const projectId = this.$route.params.id;
     const payload = {
         fields: { 
-        Nom: this.project.nom,
-        Description: this.project.description,
-        Technos: this.project.technos,
-        Lien: this.project.lien,
-        Promo: this.project.promo,
-        Etudiants: this.project.etudiants,
-        Categorie: this.project.categorie,
+            Nom: this.project.nom,
+            Description: this.project.description,
+            Technos: this.project.technos,
+            Lien: this.project.lien,
+            Promo: this.project.promo,
+            Categorie: this.project.categorie,
         }
     };
     try {
@@ -127,7 +124,7 @@
         headers: { Authorization: `Bearer ${token}` },
         });
 
-        console.log(response.data);
+        console.log("Réponse de l'API : ", response.data);
 
         this.message = 'Le projet a été modifié avec succès !';
         this.messageClass = 'success';
