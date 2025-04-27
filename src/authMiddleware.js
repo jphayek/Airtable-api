@@ -75,4 +75,4 @@ const checkAuth = (req, res, next) => {
     });
 };
 
-module.exports = {verifyToken, authenticateToken, checkAuth};
+module.exports = {verifyToken, authenticateToken, checkAuth, checkAdminRole};

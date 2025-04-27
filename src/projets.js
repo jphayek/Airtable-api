@@ -1,7 +1,7 @@
 // Projet.js - Routes liées aux projets
 const express = require('express');
 const router = express.Router();
-const { checkAuth } = require('./authMiddleware');
+const { checkAuth, checkAdminRole } = require('./authMiddleware');
 const { getProjects, addProject, likeProject, updateProject, getProjectById } = require('./airtableService');
 
 // Route pour récupérer tous les projets
@@ -65,7 +65,7 @@ router.post('/projets/:projectId/like', checkAuth, async (req, res) => { //je do
 ///////////////////////////////////////////////////////////////////
 
 // Route pour récupérer un projet par son ID
-router.get('/projets/:id', checkAuth, async (req, res) => {
+router.get('/api/projets/:id', checkAuth, async (req, res) => {
     try {
         const { id } = req.params;
         console.log("ID du projet reçu:", id);

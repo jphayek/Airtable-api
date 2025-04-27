@@ -95,9 +95,10 @@
     },
     methods: {
       async submitForm() {
+        const projectId = this.$route.params.id; 
         try {
           const token = localStorage.getItem('token');
-          const response = await axios.put(`http://localhost:5000/api/projects/${this.project.id}`, this.project, {
+          const response = await axios.put(`http://localhost:5000/api/projects/${projectId}`, this.project, {
             headers: { Authorization: `Bearer ${token}` },
           });
   
@@ -110,7 +111,7 @@
           this.$router.push({ path: '/admin' });
         } catch (error) {
           console.error('Erreur lors de la modification du projet:', error);
-          this.message = 'Erreur lors de la modification du projet.';
+          this.message = `Erreur lors de la modification du projet: ${error.response ? error.response.status : 'Serveur non disponible'}`;
           this.messageClass = 'error';
         }
       },
