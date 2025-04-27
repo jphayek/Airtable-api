@@ -82,39 +82,64 @@
         messageClass: '',
       };
     },
-    async created() {
-      const projectId = this.$route.params.id;  // Récupérer l'ID du projet à modifier
-      try {
+    async mounted() {
+    const projectId = this.$route.params.id;
+    try {
         const response = await axios.get(`http://localhost:5000/api/projects/${projectId}`);
-        this.project = response.data;  // Remplir les champs du formulaire avec les données existantes du projet
-      } catch (error) {
+        console.log('DATA REÇUE =>', response.data);
+        console.log(response.data);
+        const fields = response.data.project.fields; 
+
+        this.project = {
+        nom: fields.Nom || '',
+        description: fields.Description || '',
+        technos: fields.Technos || '',
+        lien: fields.Lien || '',
+        promo: fields.Promo || '',
+        etudiants: fields.Etudiants || '',
+        categorie: fields.Categorie || '',
+        };
+    } catch (error) {
         console.error('Erreur lors du chargement du projet:', error);
         this.message = 'Erreur lors du chargement du projet.';
         this.messageClass = 'error';
-      }
+    }
     },
+
     methods: {
-      async submitForm() {
-        const projectId = this.$route.params.id; 
-        try {
-          const token = localStorage.getItem('token');
-          const response = await axios.put(`http://localhost:5000/api/projects/${projectId}`, this.project, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-  
-          console.log(response.data);
-  
-          this.message = 'Le projet a été modifié avec succès !';
-          this.messageClass = 'success';
-  
-          // Rediriger vers la page admin après modification
-          this.$router.push({ path: '/admin' });
-        } catch (error) {
-          console.error('Erreur lors de la modification du projet:', error);
-          this.message = `Erreur lors de la modification du projet: ${error.response ? error.response.status : 'Serveur non disponible'}`;
-          this.messageClass = 'error';
+        async submitForm() {
+    this.message = '';
+    const projectId = this.$route.params.id;
+    const payload = {
+        fields: { 
+        Nom: this.project.nom,
+        Description: this.project.description,
+        Technos: this.project.technos,
+        Lien: this.project.lien,
+        Promo: this.project.promo,
+        Etudiants: this.project.etudiants,
+        Categorie: this.project.categorie,
         }
-      },
+    };
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.put(`http://localhost:5000/api/projects/${projectId}`, payload, {
+        headers: { Authorization: `Bearer ${token}` },
+        });
+
+        console.log(response.data);
+
+        this.message = 'Le projet a été modifié avec succès !';
+        this.messageClass = 'success';
+
+        this.$router.push({ path: '/admin' });
+    } catch (error) {
+        console.error('Erreur lors de la modification du projet:', error);
+        this.message = `Erreur lors de la modification du projet: ${error.response ? error.response.status : 'Serveur non disponible'}`;
+        this.messageClass = 'error';
+    }
+    },
+
     },
   };
   </script>
