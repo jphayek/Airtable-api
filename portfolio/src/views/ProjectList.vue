@@ -1,7 +1,18 @@
 <template>
   <div class="project-list">
     <h2>Liste des projets</h2>
-    
+
+    <!-- Barre de recherche -->
+    <div class="search-container">
+      <input 
+        v-model="searchQuery" 
+        @input="searchProjects" 
+        type="text" 
+        placeholder="Rechercher un projet par nom..."
+        class="search-input" 
+      />
+    </div>
+
     <!-- Indicateur de chargement -->
     <div v-if="loading" class="loading">
       Chargement des projets...
@@ -37,63 +48,91 @@
 
 <script>
 import axios from '../services/axios';
-import { ref, computed } from 'vue';
+import { ref, watch } from 'vue';
 
 export default {
   setup() {
-    const projects = ref([]); 
-    const studentId = localStorage.getItem('studentId');
+    const projects = ref([]);
+    const searchQuery = ref(''); // Variable pour stocker la recherche
+    const loading = ref(true);
+    const error = ref(false);
     const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
 
-    const isUserLoggedIn = computed(() => !!token && role === 'user');
-
-    const likeProject = async (projectId) => {
+    // Fonction pour récupérer les projets avec la recherche
+    const searchProjects = async () => {
+    loading.value = true;
     try {
-      //console.log("Token envoyé :", token);
-      const response = await axios.post(`/api/projects/${projectId}/like`, null, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+      const response = await axios.get('/api/projects', {
+        params: { search: searchQuery.value },
+        headers: { 'Authorization': `Bearer ${token}` }
       });
 
-      // Met à jour la vue en fonction de la réponse
-      console.log(response.data.message);
-      // Vous pouvez aussi mettre à jour la liste des projets ou l'état ici si nécessaire
-    } catch (error) {
-      console.error('Erreur lors du like du projet:', error);
+      projects.value = response.data;
+      loading.value = false;
+    } catch (err) {
+      console.error('Erreur lors de la recherche des projets:', err);
+      error.value = true;
+      loading.value = false;
     }
   };
 
-    // Charge les projets
-    const loadProjects = async () => {
+    // Charger les projets à l'initialisation
+    watch(searchQuery, searchProjects, { immediate: true });
+
+    // Fonction pour liker un projet
+    const likeProject = async (projectId) => {
       try {
-        const response = await axios.get('/api/projects', {
+        const response = await axios.post(`/api/projects/${projectId}/like`, null, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
-        projects.value = response.data;
+        console.log(response.data.message);
       } catch (error) {
-        console.error('Erreur lors du chargement des projets:', error);
+        console.error('Erreur lors du like du projet:', error);
       }
     };
 
-    // Charger les projets lors du montage du composant
-    loadProjects();
-
     return {
       projects,
-      isUserLoggedIn,
-      likeProject,
-      studentId
+      loading,
+      error,
+      searchQuery,
+      likeProject
     };
   }
 };
 </script>
 
 <style scoped>
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+.search-container {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.search-input {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #667eea;
+}
+
+.project-list {
+  padding: 30px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
 
 body, input, textarea, button {
   font-family: 'Roboto', sans-serif;

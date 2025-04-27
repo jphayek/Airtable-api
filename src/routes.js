@@ -32,12 +32,13 @@ router.post('/login', async (req, res) => {
 });
 
 // Route GET : Récupérer les projets (protégée par l'authentification)
-router.get('/projects', authenticateToken, async (req, res) => {
+router.get('/projects', async (req, res) => {
+    const { search } = req.query; // Récupère le paramètre de recherche
     try {
-        const projects = await getProjects();
+        const projects = await getProjects(search || '');
         res.json(projects);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ message: 'Erreur serveur', error: error.message });
     }
 });
 

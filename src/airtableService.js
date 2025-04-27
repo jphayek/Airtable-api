@@ -8,14 +8,31 @@ const AIRTABLE_TABLE_NAME = process.env.AIRTABLE_TABLE_NAME;
 const airtableUrl = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}`;
 
 // Fonction pour récupérer les projets d'Airtable
-const getProjects = async () => {
+const getProjects = async (searchQuery = '') => {
     try {
-        const response = await axios.get(airtableUrl, {
-            headers: { Authorization: `Bearer ${AIRTABLE_API_KEY}` }
+        const projects = [];
+        // Construction de l'URL avec un filtre de recherche
+        const searchFilter = searchQuery ? `&filterByFormula=SEARCH("${searchQuery}", {Nom})` : '';
+        
+        // Envoi de la requête GET à Airtable via axios
+        const response = await axios.get(`${airtableUrl}?pageSize=100${searchFilter}`, {
+            headers: {
+                Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+                'Content-Type': 'application/json'
+            }
         });
-        return response.data.records; // Retourne les projets
+
+        // Parcours des résultats pour les ajouter au tableau de projets
+        response.data.records.forEach(record => {
+            projects.push({
+                id: record.id,
+                fields: record.fields
+            });
+        });
+
+        return projects;
     } catch (error) {
-        throw new Error(error.response?.data || error.message);
+        throw new Error('Erreur lors de la récupération des projets: ' + error.message);
     }
 };
 
